@@ -1,5 +1,5 @@
 import React from "react";
-import "./Chatbot.css"; // Style this uniquely for the chatbot page
+import "./chatbot.css"; // Style this uniquely for the chatbot page
 
 export default function Chatbot() {
   return (
