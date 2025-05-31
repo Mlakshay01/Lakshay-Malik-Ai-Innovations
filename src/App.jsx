@@ -5,7 +5,7 @@ import "aos/dist/aos.css";
 import content from "./content";
 import "./App.css";
 import ContactCards from "./components/ContactUs";
-import Chatbot from "./products/Chatbot";
+import Chatbot from "./products/chatbot";
 
 export default function App() {
   useEffect(() => {
