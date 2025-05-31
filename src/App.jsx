@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, Routes, Route, useLocation } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -8,53 +8,73 @@ import ContactCards from "./components/ContactUs";
 import Chatbot from "./products/chatbot";
 
 export default function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+  const navRef = useRef(null);
+
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
 
-  const location = useLocation();
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (menuOpen && navRef.current && !navRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
 
   function scrollToId(id) {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   }
 
-  function HeroSection() {
+  function handleMenuClick(id) {
+    scrollToId(id);
+    setMenuOpen(false);
+  }
+
+  if (location.pathname === "/products/chatbot") {
     return (
-      <section id="home" className="section home-section">
-        <div className="hero-text">
-          <h1>Welcome to {content.companyName}</h1>
-          <p>{content.homeIntro}</p>
-        </div>
-        <img
-          src="/hero-graphic.png"
-          alt="Hero Graphic"
-          className="hero-graphic"
-        />
-      </section>
+      <Routes>
+        <Route path="/products/chatbot" element={<Chatbot />} />
+      </Routes>
     );
   }
 
   return (
     <>
-      {/* Navbar (hidden on chatbot route) */}
-      {location.pathname !== "/products/chatbot" && (
-        <nav className="navbar">
-          <div className="logo">{content.companyName}</div>
-          <input type="checkbox" id="menu-toggle" />
-          <label htmlFor="menu-toggle" className="menu-icon">
-            <span></span>
-            <span></span>
-            <span></span>
-          </label>
+      <nav className="navbar">
+        <div className="logo">
+          <img src={content.logo} alt="Logo" />
+        </div>
+
+        <div className={`nav-links-wrapper ${menuOpen ? "open" : ""}`} ref={navRef}>
           <ul className="nav-links">
-            <li onClick={() => scrollToId("home")}>Home</li>
-            <li onClick={() => scrollToId("products")}>Products</li>
-            <li onClick={() => scrollToId("about")}>About</li>
-            <li onClick={() => scrollToId("contact")}>Contact</li>
+            <li className="close-btn" onClick={() => setMenuOpen(false)}>✕</li>
+            <li onClick={() => handleMenuClick("home")}>Home</li>
+            <li onClick={() => handleMenuClick("products")}>Products</li>
+            <li onClick={() => handleMenuClick("about")}>About</li>
+            <li onClick={() => handleMenuClick("contact")}>Contact</li>
           </ul>
-        </nav>
-      )}
+        </div>
+
+        <button
+          className="menu-icon"
+          aria-label="Toggle menu"
+          onClick={() => setMenuOpen((prev) => !prev)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </nav>
 
       <Routes>
         <Route
@@ -62,13 +82,19 @@ export default function App() {
           element={
             <main>
               <div className="page-wrapper">
-                <HeroSection />
+                <section id="home" className="section home-section">
+                  <div className="hero-text">
+                    <h1>Welcome to {content.companyName}</h1>
+                    <p>{content.homeIntro}</p>
+                  </div>
+                  <img
+                    src="/hero-graphic.png"
+                    alt="Hero Graphic"
+                    className="hero-graphic"
+                  />
+                </section>
 
-                <section
-                  id="products"
-                  className="section products-section"
-                  data-aos="fade-up"
-                >
+                <section id="products" className="section products-section" data-aos="fade-up">
                   <h2>Our Products</h2>
                   <div className="products-list">
                     {content.products.map((p, i) => {
@@ -91,12 +117,7 @@ export default function App() {
                         </div>
                       );
                       return isExternal ? (
-                        <a
-                          key={i}
-                          href={p.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
+                        <a key={i} href={p.link} target="_blank" rel="noopener noreferrer">
                           {Card}
                         </a>
                       ) : (
@@ -108,11 +129,7 @@ export default function App() {
                   </div>
                 </section>
 
-                <section
-                  id="about"
-                  className="section about-section"
-                  data-aos="fade-up"
-                >
+                <section id="about" className="section about-section" data-aos="fade-up">
                   <h2>About Us</h2>
                   <p>{content.about}</p>
                   <h3>Meet the Founder</h3>
@@ -143,21 +160,14 @@ export default function App() {
             </main>
           }
         />
-
         <Route path="/products/chatbot" element={<Chatbot />} />
       </Routes>
 
-      {/* Footer (hidden on chatbot route) */}
-      {location.pathname !== "/products/chatbot" && (
-        <footer className="footer">
-          <div className="footer-content">
-            <p>
-              © {new Date().getFullYear()} {content.companyName} — All rights
-              reserved.
-            </p>
-          </div>
-        </footer>
-      )}
+      <footer className="footer">
+        <div className="footer-content">
+          <p>© {new Date().getFullYear()} {content.companyName} — All rights reserved.</p>
+        </div>
+      </footer>
     </>
   );
 }
