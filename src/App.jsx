@@ -57,6 +57,7 @@ export default function App() {
 
         <div className={`nav-links-wrapper ${menuOpen ? "open" : ""}`} ref={navRef}>
           <ul className="nav-links">
+            
             <li className="close-btn" onClick={() => setMenuOpen(false)}>✕</li>
             <li onClick={() => handleMenuClick("home")}>Home</li>
             <li onClick={() => handleMenuClick("products")}>Products</li>
