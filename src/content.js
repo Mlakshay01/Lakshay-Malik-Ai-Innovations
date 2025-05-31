@@ -1,5 +1,6 @@
 const content = {
   companyName: "Lakshay Malik Ai Innovations",
+  logo: "/logo.png",
   tagline: "Innovating the Future with AI",
   homeIntro:
     "We build intelligent AI solutions that transform businesses and empower users with cutting-edge technology.",
