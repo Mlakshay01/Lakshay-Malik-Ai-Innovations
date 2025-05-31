@@ -37,7 +37,7 @@ export default function App() {
 
   return (
     <>
-      {/* Only show Navbar if NOT on /products/chatbot */}
+      {/* Navbar (hidden on chatbot route) */}
       {location.pathname !== "/products/chatbot" && (
         <nav className="navbar">
           <div className="logo">{content.companyName}</div>
@@ -61,88 +61,93 @@ export default function App() {
           path="/"
           element={
             <main>
-              <HeroSection />
-              <section
-                id="products"
-                className="section products-section"
-                data-aos="fade-up"
-              >
-                <h2>Our Products</h2>
-                <div className="products-list">
-                  {content.products.map((p, i) => {
-                    const isExternal = p.link.startsWith("http");
-                    const Card = (
-                      <div
-                        className="flip-card"
-                        data-aos="fade-up"
-                        data-aos-delay={`${i * 100}`}
-                        key={i}
-                      >
-                        <div className="flip-card-inner">
-                          <div className="flip-card-front">
-                            <h3>{p.title}</h3>
-                          </div>
-                          <div className="flip-card-back">
-                            <p>{p.description}</p>
+              <div className="page-wrapper">
+                <HeroSection />
+
+                <section
+                  id="products"
+                  className="section products-section"
+                  data-aos="fade-up"
+                >
+                  <h2>Our Products</h2>
+                  <div className="products-list">
+                    {content.products.map((p, i) => {
+                      const isExternal = p.link.startsWith("http");
+                      const Card = (
+                        <div
+                          className="flip-card"
+                          data-aos="fade-up"
+                          data-aos-delay={`${i * 100}`}
+                          key={i}
+                        >
+                          <div className="flip-card-inner">
+                            <div className="flip-card-front">
+                              <h3>{p.title}</h3>
+                            </div>
+                            <div className="flip-card-back">
+                              <p>{p.description}</p>
+                            </div>
                           </div>
                         </div>
+                      );
+                      return isExternal ? (
+                        <a
+                          key={i}
+                          href={p.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {Card}
+                        </a>
+                      ) : (
+                        <Link key={i} to={p.link}>
+                          {Card}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </section>
+
+                <section
+                  id="about"
+                  className="section about-section"
+                  data-aos="fade-up"
+                >
+                  <h2>About Us</h2>
+                  <p>{content.about}</p>
+                  <h3>Meet the Founder</h3>
+                  <div className="founder-container">
+                    <a
+                      href={content.founder.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="founder-container"
+                    >
+                      <img
+                        src={content.founder.img}
+                        alt={content.founder.name}
+                        className="founder-img"
+                      />
+                      <div className="founder-info">
+                        <strong>{content.founder.name}</strong>
+                        <p>{content.founder.role}</p>
                       </div>
-                    );
-                    return isExternal ? (
-                      <a
-                        key={i}
-                        href={p.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {Card}
-                      </a>
-                    ) : (
-                      <Link key={i} to={p.link}>
-                        {Card}
-                      </Link>
-                    );
-                  })}
-                </div>
-              </section>
+                    </a>
+                  </div>
+                </section>
 
-              <section
-                id="about"
-                className="section about-section"
-                data-aos="fade-up"
-              >
-                <h2>About Us</h2>
-                <p>{content.about}</p>
-                <h3>Meet the Founder</h3>
-                <div className="founder-container">
-                  <a
-                    href={content.founder.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="founder-container"
-                  >
-                    <img
-                      src={content.founder.img}
-                      alt={content.founder.name}
-                      className="founder-img"
-                    />
-                    <div className="founder-info">
-                      <strong>{content.founder.name}</strong>
-                      <p>{content.founder.role}</p>
-                    </div>
-                  </a>
-                </div>
-              </section>
-
-              <section id="contact" className="section contact-section">
-                <ContactCards options={content.contactOptions} />
-              </section>
+                <section id="contact" className="section contact-section">
+                  <ContactCards options={content.contactOptions} />
+                </section>
+              </div>
             </main>
           }
         />
+
         <Route path="/products/chatbot" element={<Chatbot />} />
       </Routes>
 
+      {/* Footer (hidden on chatbot route) */}
       {location.pathname !== "/products/chatbot" && (
         <footer className="footer">
           <div className="footer-content">
