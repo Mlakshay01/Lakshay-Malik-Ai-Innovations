@@ -57,7 +57,7 @@ export default function App() {
 
         <div className={`nav-links-wrapper ${menuOpen ? "open" : ""}`} ref={navRef}>
           <ul className="nav-links">
-            
+
             <li className="close-btn" onClick={() => setMenuOpen(false)}>✕</li>
             <li onClick={() => handleMenuClick("home")}>Home</li>
             <li onClick={() => handleMenuClick("products")}>Products</li>
@@ -85,7 +85,14 @@ export default function App() {
               <div className="page-wrapper">
                 <section id="home" className="section home-section">
                   <div className="hero-text">
-                    <h1>Welcome to {content.companyName}</h1>
+                    <div className="hero-heading">
+                      <h1>
+                        <span className="welcome-text">Welcome to</span>
+                        
+                        <span className="company-name">{content.companyName}</span>
+                      </h1>
+                    </div>
+
                     <p>{content.homeIntro}</p>
                   </div>
                   <img
