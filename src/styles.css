@@ -11,6 +11,7 @@ body {
   color: #f0f0f0;
   line-height: 1.6;
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 /* Navbar */
@@ -107,11 +108,27 @@ body {
   }
 }
 
+/* WRAPPER */
+.page-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  margin: auto 0;
+  width: 100vw;
+}
+
 /* Sections */
+
 .section {
-  scroll-margin-top: 200px; /* navbar height + padding */
+  display: flex;
+  flex-direction: column; /* Or row, based on content */
+  justify-content: center; /* vertical center */
+  align-items: center;     /* horizontal center */
   padding: 100px 5% 60px;
   min-height: 100vh;
+  text-align: center;
+  scroll-margin-top: 200px;
 }
 
 
@@ -368,6 +385,8 @@ body {
   padding: 1.5rem 1rem;
   text-align: center;
   font-size: 0.9rem;
+  width: 100vw;
+  margin: auto;
 }
 
 
